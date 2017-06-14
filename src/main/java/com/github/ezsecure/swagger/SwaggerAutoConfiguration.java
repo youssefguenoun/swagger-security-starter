@@ -20,6 +20,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.base.Predicates.not;
@@ -77,15 +79,23 @@ public class SwaggerAutoConfiguration {
                 swaggerConfigurationProperties.getTermsOfServiceUrl(),
                 contact,
                 swaggerConfigurationProperties.getLicense(),
-                swaggerConfigurationProperties.getLicenseUrl());
+                swaggerConfigurationProperties.getLicenseUrl(), new ArrayList<VendorExtension>());
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "swagger.security", name="enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(name = "swagger.security.enabled", havingValue = "false")
     public Docket unsecuredDocket() {
         return commonApiDoc();
     }
 
+    @Bean
+    @ConditionalOnProperty(name = "swagger.security.enabled", havingValue = "true")
+    public Docket securedDocket() {
+
+        return commonApiDoc()
+                .securityContexts(newArrayList(securityContext()))
+                .securitySchemes(newArrayList(oauth()));
+    }
 
     @Bean
     @ConditionalOnProperty(name = "swagger.security.enabled", havingValue = "true")
