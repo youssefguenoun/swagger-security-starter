@@ -1,12 +1,15 @@
 package com.github.ezsecure.swagger;
 
+import com.fasterxml.classmate.TypeResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import springfox.documentation.builders.*;
+import springfox.documentation.schema.TypeNameExtractor;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -61,7 +64,7 @@ public class SwaggerAutoConfiguration {
                 .directModelSubstitute(LocalDateTime.class, java.sql.Date.class)
                 .select()
                 .paths(not(PathSelectors.regex("/error.*")))
-                .paths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
+                .paths(PathSelectors.regex(StringUtils.hasText(swaggerConfigurationProperties.getIncludePatterns())?swaggerConfigurationProperties.getIncludePatterns():DEFAULT_INCLUDE_PATTERN))
                 .build();
 
     }
@@ -217,6 +220,13 @@ public class SwaggerAutoConfiguration {
                 supportedSubmitMethods,
                 false,
                 true);
+    }
+
+    @Bean
+    PageableParameterBuilderPlugin pageableParameterBuilderPlugin(TypeNameExtractor nameExtractor,
+                                                                  TypeResolver resolver) {
+
+        return new PageableParameterBuilderPlugin(nameExtractor, resolver);
     }
 
 }
