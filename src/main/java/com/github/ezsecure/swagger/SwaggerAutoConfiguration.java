@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import springfox.documentation.builders.*;
@@ -19,17 +20,13 @@ import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.base.Predicates.not;
-import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * @author youssefguenoun
@@ -39,6 +36,7 @@ import static com.google.common.collect.Lists.newArrayList;
 @ConditionalOnProperty(name = "swagger.enabled", havingValue = "true", matchIfMissing = false)
 @EnableSwagger2
 @EnableConfigurationProperties(SwaggerConfigurationProperties.class)
+@Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
 public class SwaggerAutoConfiguration {
 
     public static final String DEFAULT_INCLUDE_PATTERN = "/.*";
