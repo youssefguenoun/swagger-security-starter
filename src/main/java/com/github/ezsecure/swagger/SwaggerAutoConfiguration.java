@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+//import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import springfox.documentation.builders.*;
@@ -36,7 +36,7 @@ import static com.google.common.collect.Sets.newHashSet;
 @ConditionalOnProperty(name = "swagger.enabled", havingValue = "true", matchIfMissing = false)
 @EnableSwagger2
 @EnableConfigurationProperties(SwaggerConfigurationProperties.class)
-@Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
+//@Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
 public class SwaggerAutoConfiguration {
 
     public static final String DEFAULT_INCLUDE_PATTERN = "/.*";
